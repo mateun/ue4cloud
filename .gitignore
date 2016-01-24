@@ -6,4 +6,5 @@
 *.swp
 *.sln
 *.sdf
+*.log
 *VC.opendb
