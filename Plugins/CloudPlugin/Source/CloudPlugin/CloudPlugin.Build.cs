@@ -61,9 +61,20 @@ public class CloudPlugin : ModuleRules
         Log.TraceError("CurlDir: " + CurlDirectory);
 
         // Add library definitions for non-Mac platforms ... can be done a little later :)
-        string full_library_path_curl = Path.Combine(CurlDirectory, "libcurlwrapper.dylib");
+        if ((Target.Platform == UnrealTargetPlatform.Win64))
+        {
+            string full_library_path_curl = Path.Combine(CurlDirectory, "MyLibcurlBuild64Bit.lib");
+            PublicAdditionalLibraries.Add(full_library_path_curl);
+            //RuntimeDependencies.Add(new RuntimeDependency(Path.Combine(CurlDirectory, "MyLibcurlBuild64Bit.dll")));
+            
+        } else {
+            string full_library_path_curl = Path.Combine(CurlDirectory, "libcurlwrapper.dylib");
+            PublicAdditionalLibraries.Add(full_library_path_curl);
+        }
+
+            
         
-        PublicAdditionalLibraries.Add(full_library_path_curl);
+        
 
 	}
 }

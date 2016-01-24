@@ -147,7 +147,9 @@
 
 /* Configure process defines this to 1 when it finds out that system    */
 /* header file sys/socket.h must be included by the external interface. */
+#ifndef _WIN32
 #define CURL_PULL_SYS_SOCKET_H 1
+#endif
 #ifdef CURL_PULL_SYS_SOCKET_H
 #  include <sys/socket.h>
 #endif
@@ -163,7 +165,12 @@
 #define CURL_SIZEOF_LONG 8
 
 /* Integral data type used for curl_socklen_t. */
+#ifdef _WIN32
+#define CURL_TYPEOF_CURL_SOCKLEN_T int
+#elif
 #define CURL_TYPEOF_CURL_SOCKLEN_T socklen_t
+#endif
+
 
 /* The size of `curl_socklen_t', as computed by sizeof. */
 #define CURL_SIZEOF_CURL_SOCKLEN_T 4

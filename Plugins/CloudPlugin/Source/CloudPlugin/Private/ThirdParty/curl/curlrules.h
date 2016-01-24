@@ -138,9 +138,11 @@
  * is the same as the one reported by sizeof() at compile time.
  */
 
+#ifndef _WIN64
 typedef char
   __curl_rule_01__
     [CurlchkszEQ(long, CURL_SIZEOF_LONG)];
+#endif
 
 /*
  * Verify that the size previously defined and expected for
@@ -148,9 +150,11 @@ typedef char
  * by sizeof() at compile time.
  */
 
+#ifndef _WIN64
 typedef char
   __curl_rule_02__
     [CurlchkszEQ(curl_off_t, CURL_SIZEOF_CURL_OFF_T)];
+#endif
 
 /*
  * Verify at compile time that the size of curl_off_t as reported
@@ -158,9 +162,11 @@ typedef char
  * for the current compilation.
  */
 
+#ifndef _WIN64
 typedef char
   __curl_rule_03__
     [CurlchkszGE(curl_off_t, long)];
+#endif
 
 /*
  * Verify that the size previously defined and expected for
@@ -168,19 +174,22 @@ typedef char
  * by sizeof() at compile time.
  */
 
+#ifndef _WIN64
 typedef char
   __curl_rule_04__
     [CurlchkszEQ(curl_socklen_t, CURL_SIZEOF_CURL_SOCKLEN_T)];
+#endif
 
 /*
  * Verify at compile time that the size of curl_socklen_t as reported
  * by sizeof() is greater or equal than the one reported for int for
  * the current compilation.
  */
-
+#ifndef _WIN64
 typedef char
   __curl_rule_05__
     [CurlchkszGE(curl_socklen_t, int)];
+#endif
 
 /* ================================================================ */
 /*          EXTERNALLY AND INTERNALLY VISIBLE DEFINITIONS           */

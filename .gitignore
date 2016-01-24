@@ -5,4 +5,5 @@
 /.vs
 *.swp
 *.sln
-
+*.sdf
+*VC.opendb
