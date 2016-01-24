@@ -61,9 +61,24 @@ public class CloudPlugin : ModuleRules
         Log.TraceError("CurlDir: " + CurlDirectory);
 
         // Add library definitions for non-Mac platforms ... can be done a little later :)
-        string full_library_path_curl = Path.Combine(CurlDirectory, "libcurlwrapper.dylib");
+        if ((Target.Platform == UnrealTargetPlatform.Win64))
+        {
+            string full_library_path_curl = Path.Combine(CurlDirectory, "MyLibcurlBuild64Bit.lib");
+            PublicAdditionalLibraries.Add(full_library_path_curl);
+            //RuntimeDependencies.Add(new RuntimeDependency(Path.Combine(CurlDirectory, "MyLibcurlBuild64Bit.dll")));
+            // Copy the dell into the plugins binary directory so it is correctly resolved at runtime
+            //PublicDelayLoadDLLs.Add(Path.Combine(CurlDirectory, "MyLibcurlBuild64Bit.dll"));
+            System.IO.File.Copy(Path.Combine(CurlDirectory, "MyLibcurlBuild64Bit.dll"), Path.Combine(BaseDirectory, "Binaries", Target.Platform.ToString(), "MyLibcurlBuild64Bit.dll"), true);
+
+
+        } else {
+            string full_library_path_curl = Path.Combine(CurlDirectory, "libcurlwrapper.dylib");
+            PublicAdditionalLibraries.Add(full_library_path_curl);
+        }
+
+            
         
-        PublicAdditionalLibraries.Add(full_library_path_curl);
+        
 
 	}
 }

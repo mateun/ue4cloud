@@ -9,7 +9,13 @@
 #ifndef RestTemplate_h
 #define RestTemplate_h
 
+#ifdef _WIN32
+#include "AllowWindowsPlatformTypes.h"
+#endif
 #include "curl/curl.h"
+#ifdef _WIN32
+#include "HideWindowsPlatformTypes.h"
+#endif
 
 // This struct is used internally
 // to hold the incoming response

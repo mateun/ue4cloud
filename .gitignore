@@ -2,3 +2,9 @@
 /**/Intermediate
 .DS_STORE
 *.xcworkspace
+/.vs
+*.swp
+*.sln
+*.sdf
+*.log
+*VC.opendb

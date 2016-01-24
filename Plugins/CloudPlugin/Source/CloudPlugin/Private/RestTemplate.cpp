@@ -78,7 +78,7 @@ FString RestTemplate::GetForString(FString restUrl)
 {
     CURLcode res;
     char curl_errbuf[CURL_ERROR_SIZE];
-    int err;
+    //int err;
     
     // FString is a wide string, but we need
     // to pass in single-byte strings
