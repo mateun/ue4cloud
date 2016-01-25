@@ -45,7 +45,8 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
     
     // First, create a map of all properties in our object
     TMap<FString, UProperty*> properties;
-    for (TFieldIterator<UProperty> it(theObject->GetClass(), EFieldIteratorFlags::SuperClassFlags::IncludeSuper); it; ++it) {
+    for (TFieldIterator<UProperty> it(theObject->GetClass(),
+                                      EFieldIteratorFlags::SuperClassFlags::IncludeSuper); it; ++it) {
         properties.Add(*it->GetNameCPP(), *it);
     }
     
@@ -77,6 +78,10 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
         // Write the property name as the json element name
         writer.String(TCHAR_TO_ANSI(*Elem.Key));
         
+        FString cppType = Elem.Value->GetCPPType();
+        FPlatformMisc::LocalPrint(
+                                  *FString::Printf(TEXT("(PropertyType: %s)\n"),
+                                                   *cppType));
         // Write the value based on the property type
         if ((int64prop = Cast<UInt64Property>(Elem.Value)) != NULL) {
             FPlatformMisc::LocalPrint(

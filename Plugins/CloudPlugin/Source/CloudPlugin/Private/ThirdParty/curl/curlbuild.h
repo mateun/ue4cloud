@@ -167,7 +167,7 @@
 /* Integral data type used for curl_socklen_t. */
 #ifdef _WIN32
 #define CURL_TYPEOF_CURL_SOCKLEN_T int
-#elif
+#else
 #define CURL_TYPEOF_CURL_SOCKLEN_T socklen_t
 #endif
 
