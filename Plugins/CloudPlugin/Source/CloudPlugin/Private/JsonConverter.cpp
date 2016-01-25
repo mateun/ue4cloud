@@ -62,6 +62,11 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
     UNameProperty *nameProp = NULL;
     UTextProperty *textProp = NULL;
     UStructProperty *structProp = NULL;
+    UPackage *CoreUObjectPackage = UObject::StaticClass()->GetOutermost();
+    static const UScriptStruct *VectorStruct = FindObjectChecked<UScriptStruct>(CoreUObjectPackage, TEXT("Vector"));
+    static const UScriptStruct *Vector2DStruct = FindObjectChecked<UScriptStruct>(CoreUObjectPackage, TEXT("Vector2D"));
+    static const UScriptStruct *RotatorStruct = FindObjectChecked<UScriptStruct>(CoreUObjectPackage, TEXT("Rotator"));
+    static const UScriptStruct *TransformStruct = FindObjectChecked<UScriptStruct>(CoreUObjectPackage, TEXT("Transform"));
     
     // Create a basic json object
     rapidjson::StringBuffer s;
@@ -75,6 +80,10 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
     // on the type of the property.
     for (auto& Elem : properties)
     {
+        
+        // Debug output
+        FString propType = Elem.Value->GetCPPType();
+        printf("propType: %s\n", TCHAR_TO_ANSI(*propType));
         
         // Write the json value according to the property type.
         if ((int64prop = Cast<UInt64Property>(Elem.Value)) != NULL) {
@@ -111,6 +120,16 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
             UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => bool: %d)\n"), *Elem.Key, val);
             writer.String(TCHAR_TO_ANSI(*Elem.Key));
             writer.Bool(val);
+        } else if ((structProp = Cast<UStructProperty>(Elem.Value)) != NULL) {
+            if (structProp->Struct == VectorStruct) {
+                
+            } else if (structProp->Struct == RotatorStruct) {
+                
+            } else if (structProp->Struct == Vector2DStruct) {
+                
+            } else if (structProp->Struct == TransformStruct) {
+                UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("Transform prop detected\n"));
+            }
         }
     }
     // End this json object
