@@ -75,9 +75,7 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
     // on the type of the property.
     for (auto& Elem : properties)
     {
-        // Write the property name as the json element name.
         
-
         // Write the json value according to the property type.
         if ((int64prop = Cast<UInt64Property>(Elem.Value)) != NULL) {
             int64 val = int64prop->GetOptionalPropertyValue_InContainer(theObject);
@@ -108,6 +106,11 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
             UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => FString: %s)\n"), *Elem.Key, *val);
             writer.String(TCHAR_TO_ANSI(*Elem.Key));
             writer.String(TCHAR_TO_ANSI(*val));
+        } else if ((boolProp = Cast<UBoolProperty>(Elem.Value)) != NULL) {
+            bool val = boolProp->GetOptionalPropertyValue_InContainer(theObject);
+            UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => bool: %d)\n"), *Elem.Key, val);
+            writer.String(TCHAR_TO_ANSI(*Elem.Key));
+            writer.Bool(val);
         }
     }
     // End this json object
@@ -132,7 +135,9 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
     writer.EndArray();
     writer.EndObject();*/
     
-    std::cout << "Json save game object: " << s.GetString() << std::endl;
+    //std::cout << "Json save game object: " << s.GetString() << std::endl;
+    FString res = s.GetString();
+    UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("SaveGameObject as JSON: %s\n"), *res);
     
     return s.GetString();
     
