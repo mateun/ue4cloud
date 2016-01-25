@@ -76,34 +76,37 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
     for (auto& Elem : properties)
     {
         // Write the property name as the json element name.
-        writer.String(TCHAR_TO_ANSI(*Elem.Key));
         
-        FString propertyType = Elem.Value->GetCPPType();
- 
+
         // Write the json value according to the property type.
-        if (propertyType == "int64") {
-            int64 val = int32prop->GetOptionalPropertyValue_InContainer(theObject);
+        if ((int64prop = Cast<UInt64Property>(Elem.Value)) != NULL) {
+            int64 val = int64prop->GetOptionalPropertyValue_InContainer(theObject);
             UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => int64: %d)\n"), *Elem.Key, val);
+            writer.String(TCHAR_TO_ANSI(*Elem.Key));
             writer.Int64(val);
             
-        } else if (propertyType == "int32") {
-            int32 val = int32prop->GetOptionalPropertyValue_InContainer(theObject);
-            UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => int32: %d)\n"), *Elem.Key, val);
+        } else if ((int32prop = Cast<UIntProperty>(Elem.Value)) != NULL) {
+            int val = int32prop->GetOptionalPropertyValue_InContainer(theObject);
+            UE_LOG(LogAPIFuncLibPlugin, Error, TEXT("(%s => int32: %d)\n"), *Elem.Key, val);
+            writer.String(TCHAR_TO_ANSI(*Elem.Key));
             writer.Int(val);
             
-        } else if (propertyType == "int16") {
-            int16 val = int16prop->GetOptionalPropertyValue_InContainer(theObject);
+        } else if ((int16prop = Cast<UInt16Property>(Elem.Value)) != NULL) {
+            int val = int16prop->GetOptionalPropertyValue_InContainer(theObject);
             UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => int16: %d)\n"), *Elem.Key, val);
+            writer.String(TCHAR_TO_ANSI(*Elem.Key));
             writer.Int(val);
             
-        } else if (propertyType == "int8") {
-            int8 val = int16prop->GetOptionalPropertyValue_InContainer(theObject);
+        } else if ((int8prop = Cast<UInt8Property>(Elem.Value)) != NULL) {
+            int val = int8prop->GetOptionalPropertyValue_InContainer(theObject);
             UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => int8: %d)\n"), *Elem.Key, val);
+            writer.String(TCHAR_TO_ANSI(*Elem.Key));
             writer.Int(val);
             
-        } else if (propertyType == "FString") {
+        } else if ((strProp = Cast<UStrProperty>(Elem.Value)) != NULL) {
             FString val = strProp->GetOptionalPropertyValue_InContainer(theObject);
             UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => FString: %s)\n"), *Elem.Key, *val);
+            writer.String(TCHAR_TO_ANSI(*Elem.Key));
             writer.String(TCHAR_TO_ANSI(*val));
         }
     }
