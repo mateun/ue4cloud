@@ -136,7 +136,7 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
                     writer.String("vec3_z");
                     writer.Double(tempVec.Z);
                 writer.EndObject();
-                
+               
                 
                 
             } else if (structProp->Struct == RotatorStruct) {
@@ -154,10 +154,10 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
                 writer.String("rot_roll");
                 writer.Double(tempRot.Roll);
                 writer.EndObject();
-                
+               
                 
             } else if (structProp->Struct == Vector2DStruct) {
-                FVector2D tempVec = *structProp->ContainerPtrToValuePtr<FVector2D>(theObject);
+               /* FVector2D tempVec = *structProp->ContainerPtrToValuePtr<FVector2D>(theObject);
                 UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => FVector2D: %f/%f/%f)\n"), *Elem.Key,
                        tempVec.X,
                        tempVec.Y);
@@ -168,10 +168,10 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
                 writer.String("vec2_y");
                 writer.Double(tempVec.Y);
                 writer.EndObject();
-                
+                */
                 
             } else if (structProp->Struct == TransformStruct) {
-                UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("Transform prop detected\n"));
+               /* UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("Transform prop detected\n"));
                 FTransform tempVec = *structProp->ContainerPtrToValuePtr<FTransform>(theObject);
                 UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => FTransform: Transflation: %f/%f/%f -\
                                                           Rotation: %f/%f/%f \
@@ -209,7 +209,7 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
                 writer.Double(tempVec.GetScale3D().Z);
                 writer.EndObject();
                 writer.EndObject();
-                
+             */
             }
         }
     }
