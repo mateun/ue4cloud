@@ -122,13 +122,94 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
             writer.Bool(val);
         } else if ((structProp = Cast<UStructProperty>(Elem.Value)) != NULL) {
             if (structProp->Struct == VectorStruct) {
+                FVector tempVec = *structProp->ContainerPtrToValuePtr<FVector>(theObject);
+                UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => FVector: %f/%f/%f)\n"), *Elem.Key,
+                       tempVec.X,
+                       tempVec.Y,
+                       tempVec.Z);
+                writer.String(TCHAR_TO_ANSI(*Elem.Key));
+                writer.StartObject();
+                    writer.String("vec3_x");
+                    writer.Double(tempVec.X);
+                    writer.String("vec3_y");
+                    writer.Double(tempVec.Y);
+                    writer.String("vec3_z");
+                    writer.Double(tempVec.Z);
+                writer.EndObject();
+                
+                
                 
             } else if (structProp->Struct == RotatorStruct) {
+                FRotator tempRot = *structProp->ContainerPtrToValuePtr<FRotator>(theObject);
+                UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => FRotator: %f/%f/%f)\n"), *Elem.Key,
+                       tempRot.Pitch,
+                       tempRot.Yaw,
+                       tempRot.Roll);
+                writer.String(TCHAR_TO_ANSI(*Elem.Key));
+                writer.StartObject();
+                writer.String("rot_pitch");
+                writer.Double(tempRot.Pitch);
+                writer.String("rot_yaw");
+                writer.Double(tempRot.Yaw);
+                writer.String("rot_roll");
+                writer.Double(tempRot.Roll);
+                writer.EndObject();
+                
                 
             } else if (structProp->Struct == Vector2DStruct) {
+                FVector2D tempVec = *structProp->ContainerPtrToValuePtr<FVector2D>(theObject);
+                UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => FVector2D: %f/%f/%f)\n"), *Elem.Key,
+                       tempVec.X,
+                       tempVec.Y);
+                writer.String(TCHAR_TO_ANSI(*Elem.Key));
+                writer.StartObject();
+                writer.String("vec2_x");
+                writer.Double(tempVec.X);
+                writer.String("vec2_y");
+                writer.Double(tempVec.Y);
+                writer.EndObject();
+                
                 
             } else if (structProp->Struct == TransformStruct) {
                 UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("Transform prop detected\n"));
+                FTransform tempVec = *structProp->ContainerPtrToValuePtr<FTransform>(theObject);
+                UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => FTransform: Transflation: %f/%f/%f -\
+                                                          Rotation: %f/%f/%f \
+                                                          Scale: %f/%f/%f)\n"), *Elem.Key,
+                       tempVec.GetTranslation().X, tempVec.GetTranslation().Y, tempVec.GetTranslation().Z,
+                       tempVec.GetRotation().X, tempVec.GetRotation().Y, tempVec.GetRotation().Z,
+                       tempVec.GetScale3D().X, tempVec.GetScale3D().Y, tempVec.GetScale3D().Z);
+                writer.String(TCHAR_TO_ANSI(*Elem.Key));
+                writer.StartObject();
+                writer.String("transform_trans");
+                writer.StartObject();
+                writer.String("vec3_x");
+                writer.Double(tempVec.GetTranslation().X);
+                writer.String("vec3_y");
+                writer.Double(tempVec.GetTranslation().Y);
+                writer.String("vec3_z");
+                writer.Double(tempVec.GetTranslation().Z);
+                writer.EndObject();
+                writer.String("transform_rot");
+                writer.StartObject();
+                writer.String("vec3_x");
+                writer.Double(tempVec.GetRotation().X);
+                writer.String("vec3_y");
+                writer.Double(tempVec.GetRotation().Y);
+                writer.String("vec3_z");
+                writer.Double(tempVec.GetRotation().Z);
+                writer.EndObject();
+                writer.String("transform_scale");
+                writer.StartObject();
+                writer.String("vec3_x");
+                writer.Double(tempVec.GetScale3D().X);
+                writer.String("vec3_y");
+                writer.Double(tempVec.GetScale3D().Y);
+                writer.String("vec3_z");
+                writer.Double(tempVec.GetScale3D().Z);
+                writer.EndObject();
+                writer.EndObject();
+                
             }
         }
     }
