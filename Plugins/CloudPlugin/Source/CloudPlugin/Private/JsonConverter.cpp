@@ -83,42 +83,42 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
         
         // Debug output
         FString propType = Elem.Value->GetCPPType();
-        printf("propType: %s\n", TCHAR_TO_ANSI(*propType));
+        printf("propType: %s\n", TCHAR_TO_UTF8(*propType));
         
         // Write the json value according to the property type.
         if ((int64prop = Cast<UInt64Property>(Elem.Value)) != NULL) {
             int64 val = int64prop->GetOptionalPropertyValue_InContainer(theObject);
             UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => int64: %d)\n"), *Elem.Key, val);
-            writer.String(TCHAR_TO_ANSI(*Elem.Key));
+            writer.Key(TCHAR_TO_UTF8(*Elem.Key));
             writer.Int64(val);
             
         } else if ((int32prop = Cast<UIntProperty>(Elem.Value)) != NULL) {
             int val = int32prop->GetOptionalPropertyValue_InContainer(theObject);
             UE_LOG(LogAPIFuncLibPlugin, Error, TEXT("(%s => int32: %d)\n"), *Elem.Key, val);
-            writer.String(TCHAR_TO_ANSI(*Elem.Key));
+            writer.String(TCHAR_TO_UTF8(*Elem.Key));
             writer.Int(val);
             
         } else if ((int16prop = Cast<UInt16Property>(Elem.Value)) != NULL) {
             int val = int16prop->GetOptionalPropertyValue_InContainer(theObject);
             UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => int16: %d)\n"), *Elem.Key, val);
-            writer.String(TCHAR_TO_ANSI(*Elem.Key));
+            writer.String(TCHAR_TO_UTF8(*Elem.Key));
             writer.Int(val);
             
         } else if ((int8prop = Cast<UInt8Property>(Elem.Value)) != NULL) {
             int val = int8prop->GetOptionalPropertyValue_InContainer(theObject);
             UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => int8: %d)\n"), *Elem.Key, val);
-            writer.String(TCHAR_TO_ANSI(*Elem.Key));
+            writer.String(TCHAR_TO_UTF8(*Elem.Key));
             writer.Int(val);
             
         } else if ((strProp = Cast<UStrProperty>(Elem.Value)) != NULL) {
             FString val = strProp->GetOptionalPropertyValue_InContainer(theObject);
             UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => FString: %s)\n"), *Elem.Key, *val);
-            writer.String(TCHAR_TO_ANSI(*Elem.Key));
-            writer.String(TCHAR_TO_ANSI(*val));
+            writer.String(TCHAR_TO_UTF8(*Elem.Key));
+            writer.String(TCHAR_TO_UTF8(*val));
         } else if ((boolProp = Cast<UBoolProperty>(Elem.Value)) != NULL) {
             bool val = boolProp->GetOptionalPropertyValue_InContainer(theObject);
             UE_LOG(LogAPIFuncLibPlugin, Verbose, TEXT("(%s => bool: %d)\n"), *Elem.Key, val);
-            writer.String(TCHAR_TO_ANSI(*Elem.Key));
+            writer.String(TCHAR_TO_UTF8(*Elem.Key));
             writer.Bool(val);
         } else if ((structProp = Cast<UStructProperty>(Elem.Value)) != NULL) {
             if (structProp->Struct == VectorStruct) {
@@ -127,7 +127,7 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
                        tempVec.X,
                        tempVec.Y,
                        tempVec.Z);
-                writer.String(TCHAR_TO_ANSI(*Elem.Key));
+                /*writer.String(TCHAR_TO_ANSI(*Elem.Key));
                 writer.StartObject();
                     writer.String("vec3_x");
                     writer.Double(tempVec.X);
@@ -135,8 +135,24 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
                     writer.Double(tempVec.Y);
                     writer.String("vec3_z");
                     writer.Double(tempVec.Z);
+                writer.EndObject();*/
+                
+                writer.Key(TCHAR_TO_UTF8(*Elem.Key));
+                writer.StartObject();
+                writer.String(TCHAR_TO_UTF8(*Elem.Key));
+                writer.Double(12.4);
                 writer.EndObject();
-               
+                
+                //writer.String(TCHAR_TO_ANSI(*Elem.Key));
+                //writer.StartObject();
+                writer.String("vec3_x");
+                writer.String("foobar");
+                //writer.Double(tempVec.X);
+                //writer.String("vec3_y");
+                //writer.Double(tempVec.Y);
+                //writer.String("vec3_z");
+                //writer.Double(tempVec.Z);
+                //writer.EndObject();
                 
                 
             } else if (structProp->Struct == RotatorStruct) {
@@ -145,7 +161,7 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
                        tempRot.Pitch,
                        tempRot.Yaw,
                        tempRot.Roll);
-                writer.String(TCHAR_TO_ANSI(*Elem.Key));
+                writer.Key(TCHAR_TO_UTF8(*Elem.Key));
                 writer.StartObject();
                 writer.String("rot_pitch");
                 writer.Double(tempRot.Pitch);
@@ -153,8 +169,9 @@ FString JsonConverter::ConvertUObjectToJsonString(UObject* theObject)
                 writer.Double(tempRot.Yaw);
                 writer.String("rot_roll");
                 writer.Double(tempRot.Roll);
+                
                 writer.EndObject();
-               
+                
                 
             } else if (structProp->Struct == Vector2DStruct) {
                /* FVector2D tempVec = *structProp->ContainerPtrToValuePtr<FVector2D>(theObject);
